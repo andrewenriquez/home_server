@@ -1,0 +1,40 @@
+version: '3.4'
+# First configuration
+# services:
+#   homepaneldocker:
+#     image: homepaneldocker
+#     build: .
+#     environment:
+#       NODE_ENV: production
+#     ports:
+#       - 4000:4000
+#     volumes:
+#       - .:/usr/src/app
+# volumes:
+#   data:
+
+services:
+  homepaneldocker:
+    image: aimvector/nodejs:1.0.0
+    build:
+      context: .
+      target: debug
+      #working_dir: /work      #comment out for build.target:prod
+      #entrypoint: /bin/sh     #comment out for build.target:prod
+      #stdin_open: true        #comment out for build.target:prod
+      #tty: true               #comment out for build.target:prod
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 4000:4000
+      - 9229:9229
+    links: 
+      - mongodb            #debug port
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - data:/data/db
+volumes:
+  data:
